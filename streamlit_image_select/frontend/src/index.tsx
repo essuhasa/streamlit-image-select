@@ -1,9 +1,10 @@
 import { Streamlit, RenderData } from "streamlit-component-lib"
+// import LazyLoad from "react-lazy-load"
 
 const labelDiv = document.body.appendChild(document.createElement("label"))
 const label = labelDiv.appendChild(document.createTextNode(""))
-const container = document.body.appendChild(document.createElement("div"))
-container.classList.add("container")
+const imagesDiv = document.body.appendChild(document.createElement("div"))
+imagesDiv.classList.add("image-picker")
 
 /**
  * The component's render function. This will be called immediately after
@@ -33,27 +34,30 @@ function onRender(event: Event): void {
   label.textContent = data.args["label"]
   let images = data.args["images"]
   let captions = data.args["captions"]
+  let large = data.args["large"]
+
   // console.log(captions)
 
-  if (container.childNodes.length === 0) {
+  if (imagesDiv.childNodes.length === 0) {
     images.forEach((image: string, i: number) => {
-      let item = container.appendChild(document.createElement("div"))
-      item.classList.add("item")
-      if (data.args["use_container_width"] === true) {
-        item.classList.add("stretch")
-      }
+      let container = imagesDiv.appendChild(document.createElement("div"))
 
-      let box = item.appendChild(document.createElement("div"))
-      box.classList.add("image-box")
+      let box = container.appendChild(document.createElement("div"))
+      box.classList.add("box")
+      // let lazy = box.appendChild(document.createElement("LazyLoad"))
 
       let img = box.appendChild(document.createElement("img"))
       img.classList.add("image")
       img.src = image
 
       if (captions) {
-        let caption = item.appendChild(document.createElement("div"))
-        caption.classList.add("caption")
-        caption.textContent = captions[i]
+        let desc = container.appendChild(document.createElement("div"))
+        desc.classList.add("caption")
+        desc.textContent = captions[i]
+      }
+      if (large === 1) {
+        imagesDiv.classList.remove("image-picker")
+        imagesDiv.classList.add("large-picker")
       }
 
       // TODO: Change this to use `default` instead of just 0.
@@ -63,7 +67,7 @@ function onRender(event: Event): void {
       }
 
       img.onclick = function () {
-        container.querySelectorAll(".selected").forEach((el) => {
+        imagesDiv.querySelectorAll(".selected").forEach((el) => {
           el.classList.remove("selected")
         })
         Streamlit.setComponentValue(i)
