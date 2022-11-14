@@ -75,10 +75,7 @@ elif isinstance(img, Image.Image):
     position = (30, 90)
 elif img == "images/cat1.jpeg":
     position = (65, 70)
-elif (
-    img
-    == "https://bagongkia.github.io/react-image-picker/0759b6e526e3c6d72569894e58329d89.jpg"
-):
+elif img == "https://bagongkia.github.io/react-image-picker/0759b6e526e3c6d72569894e58329d89.jpg":
     position = (15, 70)
 else:
     position = (100, 100)
